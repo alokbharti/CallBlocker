@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="dialog"
+            type="com.example.callblocker.ui.dialog.AddBlockedContactDialog" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_16"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="@string/add_number_blacklist"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_18"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/ic_baseline_cancel_24"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:onClick="@{()-> dialog.dismiss()}"/>
+
+        <ImageView
+            android:id="@+id/iv_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_16"
+            android:background="@drawable/ic_baseline_local_phone_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <EditText
+            android:id="@+id/et_person_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_16"
+            android:hint="@string/number"
+            app:layout_constraintBottom_toBottomOf="@id/iv_call"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_person_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <ImageView
+            android:id="@+id/iv_person_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_16"
+            android:background="@drawable/ic_baseline_person_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_call" />
+
+        <EditText
+            android:id="@+id/et_person_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:hint="@string/name"
+            app:layout_constraintBottom_toBottomOf="@id/iv_person_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_person_name"
+            app:layout_constraintTop_toBottomOf="@id/et_person_number" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_library_books_24"
+            app:layout_constraintBottom_toBottomOf="@id/et_person_number"
+            app:layout_constraintEnd_toEndOf="@id/et_person_name"
+            app:layout_constraintTop_toTopOf="@id/et_person_number" />
+
+        <Button
+            android:id="@+id/btn_add_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/round_shape"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/add"
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toBottomOf="@id/et_person_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
