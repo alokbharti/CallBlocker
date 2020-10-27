@@ -43,6 +43,7 @@
             tools:text="7869511134"/>
 
         <ImageButton
+            android:id="@+id/btn_delete_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"

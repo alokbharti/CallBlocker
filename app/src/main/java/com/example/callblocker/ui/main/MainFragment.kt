@@ -1,23 +1,30 @@
 package com.example.callblocker.ui.main
 
+import android.content.ContentValues
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.provider.BlockedNumberContract.BlockedNumbers
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.example.callblocker.R
 import com.example.callblocker.data.BlockedContact
 import com.example.callblocker.databinding.MainFragmentBinding
+import com.example.callblocker.listener.OnRecyclerViewItemClickListener
 import com.example.callblocker.ui.adapter.BlockedContactAdapter
 import com.example.callblocker.ui.dialog.AddBlockedContactDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : Fragment(), AddBlockedContactDialog.AddBlockedContactListener {
+class MainFragment : Fragment(),
+    AddBlockedContactDialog.AddBlockedContactListener,
+    OnRecyclerViewItemClickListener
+{
 
     companion object {
         fun newInstance() = MainFragment()
@@ -36,7 +43,7 @@ class MainFragment : Fragment(), AddBlockedContactDialog.AddBlockedContactListen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.lifecycleOwner = this
-        adapter = BlockedContactAdapter()
+        adapter = BlockedContactAdapter(this)
         binding.adapter = adapter
 
         viewModel.getAllBlockedContacts().observe(viewLifecycleOwner, Observer {
@@ -54,7 +61,15 @@ class MainFragment : Fragment(), AddBlockedContactDialog.AddBlockedContactListen
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onAddBlockedContact(blockedContact: BlockedContact) {
         viewModel.insertBlockedContact(blockedContact)
+        val values = ContentValues()
+        values.put(BlockedNumbers.COLUMN_ORIGINAL_NUMBER, blockedContact.number)
+        requireActivity().contentResolver.insert(BlockedNumbers.CONTENT_URI, values)
+    }
+
+    override fun onClick(blockedContact: BlockedContact) {
+        viewModel.deleteBlockedContact(blockedContact)
     }
 }

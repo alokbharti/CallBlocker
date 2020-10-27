@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.callblocker.data.BlockedContact
 import com.example.callblocker.databinding.ItemBlockedContactBinding
+import com.example.callblocker.listener.OnRecyclerViewItemClickListener
 
-class BlockedContactAdapter : ListAdapter<BlockedContact, BlockedContactAdapter.ViewHolder>(
+class BlockedContactAdapter(onRecyclerViewItemClickListener: OnRecyclerViewItemClickListener)
+    : ListAdapter<BlockedContact, BlockedContactAdapter.ViewHolder>(
     BlockedContactItemDiffCallback()
-) {
-
+)
+{
+    val listener = onRecyclerViewItemClickListener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemBlockedContactBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,14 +23,17 @@ class BlockedContactAdapter : ListAdapter<BlockedContact, BlockedContactAdapter.
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val blockedContact = getItem(position)
-        holder.bind(blockedContact)
+        holder.bind(blockedContact, listener)
     }
 
     class ViewHolder(binding: ItemBlockedContactBinding) : RecyclerView.ViewHolder(binding.root) {
         private val itemBlockedContactBinding : ItemBlockedContactBinding = binding
-        fun bind(blockedContact: BlockedContact){
+        fun bind(blockedContact: BlockedContact, listener: OnRecyclerViewItemClickListener){
             itemBlockedContactBinding.blockedContact = blockedContact
             itemBlockedContactBinding.executePendingBindings()
+            itemBlockedContactBinding.btnDeleteNumber.setOnClickListener{
+                listener.onClick(blockedContact)
+            }
         }
     }
 
