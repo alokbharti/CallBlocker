@@ -42,7 +42,8 @@
             android:layout_margin="@dimen/margin_16"
             android:background="@drawable/ic_baseline_local_phone_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintTop_toTopOf="@id/et_person_number"
+            app:layout_constraintBottom_toBottomOf="@id/et_person_number"/>
 
         <EditText
             android:id="@+id/et_person_number"
@@ -52,7 +53,6 @@
             android:layout_marginEnd="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_16"
             android:hint="@string/number"
-            app:layout_constraintBottom_toBottomOf="@id/iv_call"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_person_name"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -64,7 +64,8 @@
             android:layout_margin="@dimen/margin_16"
             android:background="@drawable/ic_baseline_person_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_call" />
+            app:layout_constraintTop_toTopOf="@id/et_person_name"
+            app:layout_constraintBottom_toBottomOf="@id/et_person_name"/>
 
         <EditText
             android:id="@+id/et_person_name"
@@ -72,16 +73,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_16"
             android:hint="@string/name"
-            app:layout_constraintBottom_toBottomOf="@id/iv_person_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_person_name"
             app:layout_constraintTop_toBottomOf="@id/et_person_number" />
 
         <ImageView
+            android:id="@+id/iv_contact_chooser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_baseline_library_books_24"
+            android:background="@drawable/ic_baseline_contacts_24"
             app:layout_constraintBottom_toBottomOf="@id/et_person_number"
             app:layout_constraintEnd_toEndOf="@id/et_person_name"
             app:layout_constraintTop_toTopOf="@id/et_person_number" />

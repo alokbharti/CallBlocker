@@ -1,7 +1,12 @@
 package com.example.callblocker.ui.dialog
 
-import android.content.Context
+import android.app.Activity
+import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +16,11 @@ import com.example.callblocker.R
 import com.example.callblocker.data.BlockedContact
 import com.example.callblocker.databinding.DialogAddBlockedContactBinding
 
+
 class AddBlockedContactDialog(addBlockedContactListener: AddBlockedContactListener) : DialogFragment(){
     private lateinit var binding: DialogAddBlockedContactBinding
     private val listener = addBlockedContactListener
+    private val PICK_CONTACT_REQUEST_CODE = 103
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +50,16 @@ class AddBlockedContactDialog(addBlockedContactListener: AddBlockedContactListen
                 listener.onAddBlockedContact(blockedContact)
             }
         }
+
+        binding.ivContactChooser.setOnClickListener{
+            val pickContactIntent = Intent(
+                Intent.ACTION_PICK,
+                ContactsContract.Contacts.CONTENT_URI
+            )
+
+            pickContactIntent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
+            startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST_CODE)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -59,5 +76,27 @@ class AddBlockedContactDialog(addBlockedContactListener: AddBlockedContactListen
 
     interface AddBlockedContactListener{
         fun onAddBlockedContact(blockedContact: BlockedContact)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_CONTACT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val uri: Uri? = data?.data
+            if (uri != null) {
+                var c: Cursor? = null
+                try {
+                    c = requireActivity().contentResolver.query(
+                        uri, arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),
+                        null, null, null
+                    )
+                    if (c != null && c.moveToFirst()) {
+                        val number: String = c.getString(0)
+                        binding.etPersonNumber.setText(number)
+                    }
+                } finally {
+                    c?.close()
+                }
+            }
+        }
     }
 }

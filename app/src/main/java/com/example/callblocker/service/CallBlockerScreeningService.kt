@@ -9,11 +9,7 @@ import com.android.internal.telephony.ITelephony
 
 class CallBlockerScreeningService: BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
-        //Create object of Telephony Manager class.
-        val telephony =
-            context!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val incomingNumber:String? = intent!!.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
-
         endCallIfBlocked(incomingNumber, context)
     }
 

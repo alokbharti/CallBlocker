@@ -1,18 +1,16 @@
 package com.example.callblocker.ui.main
 
-import android.content.ContentValues
-import android.os.Build
 import android.os.Bundle
-import android.provider.BlockedNumberContract.BlockedNumbers
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.example.callblocker.R
 import com.example.callblocker.data.BlockedContact
 import com.example.callblocker.databinding.MainFragmentBinding
 import com.example.callblocker.listener.OnRecyclerViewItemClickListener
@@ -33,6 +31,7 @@ class MainFragment : Fragment(),
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var binding: MainFragmentBinding
     private lateinit var adapter: BlockedContactAdapter
+    private lateinit var blockedContactList: List<BlockedContact>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -52,6 +51,7 @@ class MainFragment : Fragment(),
             } else {
                 binding.tvNoContacts.visibility = GONE
                 adapter.submitList(it)
+                blockedContactList = it
             }
         })
 
@@ -61,12 +61,15 @@ class MainFragment : Fragment(),
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onAddBlockedContact(blockedContact: BlockedContact) {
+        //check for already added number
+        for (dbBlockedContact in blockedContactList){
+            if (blockedContact.number == dbBlockedContact.number) {
+                Toast.makeText(context, getString(R.string.already_added_number), Toast.LENGTH_LONG).show()
+                return
+            }
+        }
         viewModel.insertBlockedContact(blockedContact)
-        val values = ContentValues()
-        values.put(BlockedNumbers.COLUMN_ORIGINAL_NUMBER, blockedContact.number)
-        requireActivity().contentResolver.insert(BlockedNumbers.CONTENT_URI, values)
     }
 
     override fun onClick(blockedContact: BlockedContact) {
