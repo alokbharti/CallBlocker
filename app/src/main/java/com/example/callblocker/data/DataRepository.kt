@@ -19,7 +19,7 @@ class DataRepository @Inject constructor(private val blockedContactDao: BlockedC
         }
     }
 
-    fun getBlockedContactByNumber(number: String): Flow<BlockedContact> {
+    fun getBlockedContactByNumber(number: String): BlockedContact? {
         return blockedContactDao.getBlockedContact(number)
     }
 

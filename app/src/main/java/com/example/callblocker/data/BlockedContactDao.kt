@@ -19,5 +19,5 @@ interface BlockedContactDao {
     fun getAllBlockedContactList(): Flow<List<BlockedContact>>
 
     @Query("SELECT * FROM BlockedContact WHERE number = :numberToBeSearched")
-    fun getBlockedContact(numberToBeSearched : String): Flow<BlockedContact>
+    fun getBlockedContact(numberToBeSearched : String): BlockedContact?
 }
